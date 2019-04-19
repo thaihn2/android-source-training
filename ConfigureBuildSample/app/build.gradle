@@ -1,0 +1,145 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = '0.8.2'
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "$project.buildDir/intermediates/kotlin-classes/debug", excludes: fileFilter)
+    def mainSrc = "$project.projectDir/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: project.buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
+    ])
+}
+
+android {
+    compileSdkVersion 28 // Là mức API nên sử dụng hoặc thấp hơn để compile ứng dụng
+    defaultConfig {
+        applicationId "android.thaihn.configurebuildsample" // id của ứng dụng khi được publish lên Store
+        minSdkVersion 21 // SDK thấp nhất mà ứng dụng hỗ trợ
+        targetSdkVersion 28 // Version SDK được chỉ định dùng để test ứng dụng
+        versionCode 1 // Định nghĩa số hiệu version của ứng dụng, mỗi lần update ứng dụng đều phải tăng lên
+        versionName "1.0" // Định nghĩa tên version của ứng dụng, ví dụ như 1.1.0
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        release {
+            storeFile file("release-key.keystore")
+            storePassword 'password'
+            keyAlias 'alias'
+            keyPassword 'thaihn'
+        }
+    }
+
+    dataBinding{
+        enabled = true
+    }
+
+    // Là nơi cấu hình nhiều build type khác nhau. Mặc định, hệ thống sẽ định nghĩa 2 build type là debug và release.
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            testCoverageEnabled true
+        }
+
+        staging {
+            initWith debug
+            manifestPlaceholders = [hostName:"android.thaihn.configurebuildsample"]
+            applicationIdSuffix ".debugStaging"
+        }
+
+    }
+
+    // Tạo ra nhiều version khác nhau của ứng dụng. Ứng dụng có thể là bản demo hoặc là full
+    flavorDimensions "version"
+    productFlavors {
+        demo {
+            dimension "version"
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+        }
+        full {
+            dimension "version"
+            applicationIdSuffix ".full"
+            versionNameSuffix "-full"
+        }
+    }
+
+    variantFilter { variant ->
+        def names = variant.flavors*.name
+        // To check for a certain build type, use variant.buildType.name == "<buildType>"
+        if ( names.contains("demo") && names.contains("staging")) {
+            // Gradle ignores any variants that satisfy the conditions above.
+            setIgnore(true)
+        }
+    }
+
+    sourceSets {
+        demo {
+            java.srcDirs = ['src/demo/java', 'src/main/java']
+            resources.srcDirs = ['src/demo/res']
+        }
+
+        full {
+            java.srcDirs = ['src/full/java', 'src/main/java']
+            resources.srcDirs = ['src/full/res']
+        }
+    }
+
+    testOptions {
+        execution 'ANDROID_TEST_ORCHESTRATOR'
+        animationsDisabled true
+
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
+//    implementation ('junit:junit:4.12'){
+//        exclude group: 'org.hamcrest', module:'hamcrest-core'
+//    }
+//
+//    androidTestImplementation ('org.mockito:mockito-core:1.10.19'){
+//        exclude group: 'org.hamcrest', module:'hamcrest-core'
+//    }
+
+
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:4.0.2'
+}
