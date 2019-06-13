@@ -2,6 +2,7 @@ package android.thaihn.notificationsample.services.firebase
 
 import android.content.Intent
 import android.thaihn.notificationsample.ui.MainActivity
+import android.thaihn.notificationsample.ui.detail.DetailsActivity
 import android.thaihn.notificationsample.util.NotificationUtil
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -26,7 +27,7 @@ class SampleMessagingService : FirebaseMessagingService() {
         val data = notificationUtil.parserData(remoteMessage?.data)
         Log.d(TAG, "data:$data")
 
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, DetailsActivity::class.java)
         notificationUtil.showNotification(
                 1,
                 data,

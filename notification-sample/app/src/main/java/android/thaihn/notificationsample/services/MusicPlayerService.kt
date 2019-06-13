@@ -7,7 +7,6 @@ import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.app.TaskStackBuilder
@@ -16,7 +15,7 @@ import android.thaihn.notificationsample.entity.MusicState
 import android.thaihn.notificationsample.ui.playmusic.PlayMusicActivity
 
 class MusicPlayerService : Service(), MediaPlayer.OnPreparedListener,
-    MediaPlayer.OnCompletionListener {
+        MediaPlayer.OnCompletionListener {
 
     companion object {
         private val TAG = MusicPlayerService::class.java.simpleName
@@ -57,7 +56,7 @@ class MusicPlayerService : Service(), MediaPlayer.OnPreparedListener,
     private var mNotificationManager: NotificationManagerCompat? = null
 
     private val mListMusic =
-        arrayListOf(R.raw.dung_nguoi_dung_thoi_diem, R.raw.thaythe, R.raw.buon_cua_anh)
+            arrayListOf(R.raw.dung_nguoi_dung_thoi_diem, R.raw.thaythe, R.raw.buon_cua_anh)
 
     private var mCurrentPosition = 1
 
@@ -70,7 +69,11 @@ class MusicPlayerService : Service(), MediaPlayer.OnPreparedListener,
     override fun onCreate() {
         super.onCreate()
         mNotificationManager = NotificationManagerCompat.from(this)
-        createNotification()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel()
+        } else {
+            createNotification()
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -174,8 +177,7 @@ class MusicPlayerService : Service(), MediaPlayer.OnPreparedListener,
     }
 
     private fun handleNotificationAction(intent: Intent?) {
-        val action = intent?.action ?: return
-        when (action) {
+        when (intent?.action ?: return) {
             ACTION_OPEN_APP -> {
                 playSong(0)
                 updateNotification()
@@ -195,11 +197,10 @@ class MusicPlayerService : Service(), MediaPlayer.OnPreparedListener,
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun createNotificationChannel() {
-        val importance = NotificationManager.IMPORTANCE_LOW
+        val importance = NotificationManager.IMPORTANCE_HIGH
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val mChannel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
             manager.createNotificationChannel(mChannel)
         }
@@ -248,22 +249,22 @@ class MusicPlayerService : Service(), MediaPlayer.OnPreparedListener,
         } else {
             R.drawable.ic_media_play_symbol_white
         }
-        mBuilder = NotificationCompat.Builder(this)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setContentTitle("Title song")
-            .setContentText("Singer song")
-            .setSmallIcon(R.drawable.ic_music_player)
-            .setContentIntent(mPendingItem)
-            .addAction(R.drawable.ic_previous_white, "", mPendingPrevious)
-            .addAction(iconPlayPause, "", mPendingPlay)
-            .addAction(R.drawable.ic_next_white, "", mPendingNext)
-            .setStyle(
-                android.support.v4.media.app.NotificationCompat.MediaStyle()
-                    .setShowActionsInCompactView(
-                        ORDER_ACTION_PREVIOUS,
-                        ORDER_ACTION_PLAY_PAUSE, ORDER_ACTION_NEXT
-                    )
-            )
+        mBuilder = NotificationCompat.Builder(this, CHANNEL_NAME)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setContentTitle("Title song")
+                .setContentText("Singer song")
+                .setSmallIcon(R.drawable.ic_music_player)
+                .setContentIntent(mPendingItem)
+                .addAction(R.drawable.ic_previous_white, "", mPendingPrevious)
+                .addAction(iconPlayPause, "", mPendingPlay)
+                .addAction(R.drawable.ic_next_white, "", mPendingNext)
+                .setStyle(
+                        android.support.v4.media.app.NotificationCompat.MediaStyle()
+                                .setShowActionsInCompactView(
+                                        ORDER_ACTION_PREVIOUS,
+                                        ORDER_ACTION_PLAY_PAUSE, ORDER_ACTION_NEXT
+                                )
+                )
         return mBuilder?.build()
     }
 }

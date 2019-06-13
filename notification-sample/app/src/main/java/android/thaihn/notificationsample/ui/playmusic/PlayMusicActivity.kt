@@ -69,9 +69,9 @@ class PlayMusicActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         bindService(
-            Intent(this, MusicPlayerService::class.java),
-            mConnection,
-            Context.BIND_AUTO_CREATE
+                Intent(this, MusicPlayerService::class.java),
+                mConnection,
+                Context.BIND_AUTO_CREATE
         )
         registerReceiver(mBroadcastReceive, initIntentFilter())
 

@@ -15,8 +15,8 @@ import android.thaihn.notificationsample.R
 import android.thaihn.notificationsample.entity.ActionType
 import android.thaihn.notificationsample.entity.DataNotification
 import android.thaihn.notificationsample.services.firebase.SampleMessagingService
-import android.thaihn.notificationsample.ui.detail.DetailsActivity
 import android.thaihn.notificationsample.ui.MainActivity
+import android.thaihn.notificationsample.ui.detail.DetailsActivity
 import android.thaihn.notificationsample.ui.detail.MyBroadcast
 import android.widget.RemoteViews
 import com.google.firebase.messaging.RemoteMessage
@@ -43,14 +43,9 @@ class NotificationUtil(context: Context) {
 
     private val mContext = context
 
-    fun showNotification(
-        notificationId: Int,
-        data: DataNotification?,
-        notification: RemoteMessage.Notification?,
-        intent: Intent
-    ) {
+    fun showNotification(notificationId: Int, data: DataNotification?, notification: RemoteMessage.Notification?, intent: Intent) {
         val notificationManager =
-            mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = data?.channel
             val descriptionText = notification?.body
@@ -102,20 +97,20 @@ class NotificationUtil(context: Context) {
             putExtra(EXTRA_NOTIFICATION_ID, notificationId)
         }
         val replyPendingIntent = PendingIntent.getActivity(
-            mContext,
-            REQUEST_CODE_ACTION_REPLY,
-            intent,
-            PendingIntent.FLAG_CANCEL_CURRENT
+                mContext,
+                REQUEST_CODE_ACTION_REPLY,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
         )
 
         return NotificationCompat.Action.Builder(
-            R.drawable.ic_send_black_24dp,
-            "Reply",
-            replyPendingIntent
+                R.drawable.ic_send_black_24dp,
+                "Reply",
+                replyPendingIntent
         )
-            .addRemoteInput(remoteInput)
-            .setAllowGeneratedReplies(true)
-            .build()
+                .addRemoteInput(remoteInput)
+                .setAllowGeneratedReplies(true)
+                .build()
     }
 
     private fun createAction(type: ActionType): PendingIntent {
@@ -123,19 +118,19 @@ class NotificationUtil(context: Context) {
             ActionType.ACTIVITY -> {
                 val intent = Intent(mContext, DetailsActivity::class.java)
                 return PendingIntent.getActivity(
-                    mContext,
-                    REQUEST_CODE_ACTION_MORE,
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                        mContext,
+                        REQUEST_CODE_ACTION_MORE,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
                 )
             }
             ActionType.SERVICE -> {
                 val intent = Intent(mContext, SampleMessagingService::class.java)
                 return PendingIntent.getService(
-                    mContext,
-                    REQUEST_CODE_ACTION_MORE,
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                        mContext,
+                        REQUEST_CODE_ACTION_MORE,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
                 )
             }
             ActionType.BROADCAST -> {
@@ -143,19 +138,19 @@ class NotificationUtil(context: Context) {
                 intent.action = BROADCAST_ACTION_MORE
                 intent.putExtra(EXTRA_NOTIFICATION_ID, 1)
                 return PendingIntent.getBroadcast(
-                    mContext,
-                    REQUEST_CODE_ACTION_MORE,
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                        mContext,
+                        REQUEST_CODE_ACTION_MORE,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
                 )
             }
             else -> {
                 val intent = Intent(mContext, MainActivity::class.java)
                 return PendingIntent.getActivity(
-                    mContext,
-                    REQUEST_CODE_ACTION_MORE,
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                        mContext,
+                        REQUEST_CODE_ACTION_MORE,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
                 )
             }
         }
@@ -163,9 +158,9 @@ class NotificationUtil(context: Context) {
 
 
     private fun createNotificationBuilder(
-        data: DataNotification?,
-        notification: RemoteMessage.Notification?,
-        intent: Intent
+            data: DataNotification?,
+            notification: RemoteMessage.Notification?,
+            intent: Intent
     ): NotificationCompat.Builder {
         var channel: String = CHANNEL_COMMON
 
@@ -174,34 +169,34 @@ class NotificationUtil(context: Context) {
         }
 
         val pendingIntent = PendingIntent.getActivity(
-            mContext,
-            REQUEST_CODE_PENDING_INTENT,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+                mContext,
+                REQUEST_CODE_PENDING_INTENT,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         return NotificationCompat.Builder(mContext, channel)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle(notification?.title)
-            .setDefaults(Notification.DEFAULT_SOUND)
-            .setContentText(notification?.body)
-            .setStyle(
-                NotificationCompat.BigTextStyle()
-                    .bigText(notification?.body)
-            )
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(notification?.title)
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setContentText(notification?.body)
+                .setStyle(
+                        NotificationCompat.BigTextStyle()
+                                .bigText(notification?.body)
+                )
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
     }
 
     fun parserData(data: Map<String, String>?): DataNotification? {
         data?.let {
             val jsonObject = JSONObject(it)
             return DataNotification(
-                jsonObject.optString(DATA_TYPE, null),
-                jsonObject.optString(DATA_CHANNEL, null),
-                jsonObject.optString(DATA_SENDER_ID, null),
-                jsonObject.optString(DATA_SENDER_AVATAR, null)
+                    jsonObject.optString(DATA_TYPE, null),
+                    jsonObject.optString(DATA_CHANNEL, null),
+                    jsonObject.optString(DATA_SENDER_ID, null),
+                    jsonObject.optString(DATA_SENDER_AVATAR, null)
             )
         }
         return null
@@ -229,10 +224,10 @@ class NotificationUtil(context: Context) {
         // Key server get from FireBase console: Project Setting -> Cloud Messaging -> Legacy server key
     }
 
-    private fun getRemoteViewChat( message: String, remoteMessage: RemoteMessage, bitmap: Bitmap): RemoteViews {
+    private fun getRemoteViewChat(message: String, remoteMessage: RemoteMessage, bitmap: Bitmap): RemoteViews {
         val notificationView = RemoteViews(
-           mContext.packageName,
-            R.layout.layout_notification_chat
+                mContext.packageName,
+                R.layout.layout_notification_chat
         )
         notificationView.setImageViewBitmap(R.id.imgAvatarNoti, bitmap)
         notificationView.setTextViewText(R.id.txtMessageNoti, remoteMessage.notification?.body)

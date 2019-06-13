@@ -65,10 +65,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun parserDataFromBundle(bundle: Bundle?): DataNotification {
         return DataNotification(
-            bundle?.getString(NotificationUtil.DATA_TYPE),
-            bundle?.getString(NotificationUtil.DATA_CHANNEL),
-            bundle?.getString(NotificationUtil.DATA_SENDER_ID),
-            bundle?.getString(NotificationUtil.DATA_SENDER_AVATAR)
+                bundle?.getString(NotificationUtil.DATA_TYPE),
+                bundle?.getString(NotificationUtil.DATA_CHANNEL),
+                bundle?.getString(NotificationUtil.DATA_SENDER_ID),
+                bundle?.getString(NotificationUtil.DATA_SENDER_AVATAR)
         )
     }
 }
