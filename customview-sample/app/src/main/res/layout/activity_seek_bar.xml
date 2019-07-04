@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="1000"
+        android:progress="50"
+        android:secondaryProgress="700"
+        android:secondaryProgressTint="@color/colorAccent" />
+
+    <android.thaihn.customview.seekbar.widget.SeekBarCustom
+        android:id="@+id/seekBarCustom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seekBar"
+        custom:colorBackground="@color/md_grey_500"
+        custom:colorWheel="@color/md_red_500"
+        custom:max="100" />
+
+    <TextView
+        android:id="@+id/textResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:text="50"
+        android:textColor="@color/md_black_1000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/seekBarCustom"
+        app:layout_constraintStart_toEndOf="@id/seekBarCustom"
+        app:layout_constraintTop_toTopOf="@id/seekBarCustom" />
+</android.support.constraint.ConstraintLayout>
