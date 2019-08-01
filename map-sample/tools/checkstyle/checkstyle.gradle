@@ -1,0 +1,23 @@
+apply plugin: 'checkstyle'
+
+task checkstyle(type: Checkstyle) {
+    description 'Check code standard'
+    group 'verification'
+    configFile file("${project.rootDir}/tools/checkstyle/checkstyle.xml")
+	//configProperties.checkstyleSuppressionsPath file("${project.rootDir}/tools/checkstyle_suppressions.xml").absolutePath
+    source fileTree('src/main/java')
+    include '**/*.java'
+    exclude '**/gen/**'
+    ignoreFailures = true
+    classpath = files()
+    showViolations false
+    reports {
+        xml.enabled = false
+        html.enabled = true
+//        html {
+//            destination "$project.buildDir/outputs/checkstyle/checkstyle-result.html"
+//        }
+    }
+}
+
+tasks.withType(Checkstyle) {ignoreFailures = true }

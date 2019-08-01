@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    //UI
+    api deps.supportAppCompat
+    api deps.supportTransition
+    api deps.butterknife
+    kapt deps.butterknifeCompiler
+    //RX
+    api deps.rxandroid
+    api deps.rxjava
+    //DI
+    api deps.dagger2
+    api deps.dagger2android
+    api (deps.dagger2support)  {
+        exclude group: 'com.android.support'
+    }
+    kapt deps.dagger2compiler
+    kapt deps.dagger2processor
+    //Kotlin
+    api deps.kotlinStdlib
+    api deps.kotlinReflect
+}

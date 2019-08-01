@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MatchWidthHeight">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="MatchWidthWrapHeight">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MatchHeightWrapWidth">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="FillWidthWrapHeight">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="FillWidthMatchHeight">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="FillHeightWrapWidth">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    <style name="FillHeightMatchWidth">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    <style name="WrapWidthHeight">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MatchConstraint">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    <style name="MatchWidthWrapHeightConstraint">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="LinearLayout.MatchWidthHeight.Vertical" parent="MatchWidthHeight">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="LinearLayout.MatchWidthHeight.Horizontal" parent="MatchWidthHeight">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="LinearLayout.MatchWidth.Horizontal" parent="MatchWidthWrapHeight">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="LinearLayout.MatchWidth.Vertical" parent="MatchWidthWrapHeight">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="LinearLayout.WrapWidthHeight.Vertical" parent="WrapWidthHeight">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="LinearLayout.WrapWidthHeight.Horizontal" parent="WrapWidthHeight">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <include layout="@layout/toolbar" />
+
+    <fragment
+        android:id="@+id/fr_home_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/home_toolbar" />
+
+    <include
+        layout="@layout/search_result"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/btn_home_book_car"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/home_toolbar"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_home_book_car"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/dimen_16"
+        android:background="@color/colorPrimary"
+        android:text="@string/home_title_booking"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_16sp" />
+</RelativeLayout>

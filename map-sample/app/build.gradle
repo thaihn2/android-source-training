@@ -1,0 +1,155 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+//if use google service uncomment below line
+// apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'io.fabric'
+
+// Create a variable called keystorePropertiesFile, and initialize it to your
+// keystore.properties file, in the rootProject folder.
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Load keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        //TODO should replace all google-service content also, temporary replcae pnly packagename
+        applicationId "com.transportation.bookcar"
+        compileSdkVersion rootProject.ext.compileSdkVersion
+        buildToolsVersion rootProject.ext.buildToolsVersion
+        minSdkVersion rootProject.ext.minSdkVersion
+        versionCode rootProject.ext.appVersionCode
+        versionName rootProject.ext.appVersionName
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['store_file'])
+            storePassword keystoreProperties['store_password']
+            keyAlias keystoreProperties['key_alias']
+            keyPassword keystoreProperties['key_alias_password']
+        }
+    }
+    buildTypes {
+        def STRING = "String"
+        def BOOLEAN = "boolean"
+        debug {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            buildConfigField BOOLEAN, "SHOW_LOG", show_log_dev
+            buildConfigField STRING, "SERVER_API_ADDR", ServerApiAddr_dev
+            buildConfigField STRING, "SERVER_API_KEY", ServerApiKey_dev
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        apv_test {
+            signingConfig signingConfigs.release
+            initWith debug
+            buildConfigField BOOLEAN, "SHOW_LOG", show_log_staging
+            buildConfigField STRING, "SERVER_API_ADDR", ServerApiAddr_test
+            buildConfigField STRING, "SERVER_API_KEY", ServerApiKey_test
+            matchingFallbacks = ['debug']
+        }
+        staging {
+            signingConfig signingConfigs.release
+            initWith debug
+            buildConfigField BOOLEAN, "SHOW_LOG", show_log_staging
+            buildConfigField STRING, "SERVER_API_ADDR", ServerApiAddr_staging
+            buildConfigField STRING, "SERVER_API_KEY", ServerApiKey_staging
+            matchingFallbacks = ['debug']
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+//            shrinkResources true
+            buildConfigField BOOLEAN, "SHOW_LOG", show_log
+            buildConfigField STRING, "SERVER_API_ADDR", ServerApiAddr
+            buildConfigField STRING, "SERVER_API_KEY", ServerApiKey
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        incremental = true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dexOptions {
+        threadCount 4
+        javaMaxHeapSize '4g'
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+kapt {
+    useBuildCache = true
+}
+
+dependencies {
+    //Runtime
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    implementation deps.multidex
+//    implementation deps.kotlinReflect
+//    implementation deps.kotlinStdlib
+    implementation project(path: ':core')
+    implementation project(path: ':domain')
+    implementation project(path: ':common')
+
+    //firebase
+    implementation deps.fcm
+    implementation deps.firebase_core
+    implementation deps.fcm_jobdispatcher
+    implementation deps.firebase_auth
+    implementation deps.firebase_database
+
+    //Ads
+    //UI
+    implementation deps.supportAppCompat
+    implementation deps.supportDesignCompat
+    implementation deps.supportRecyclerviewCompat
+    implementation deps.supportCardView
+    implementation deps.constrainLayout
+    implementation deps.glide
+
+    //data and logic
+    implementation deps.easypermissions
+//    implementation deps.rxandroid
+//    implementation deps.rxjava
+    implementation deps.rxRelay
+    implementation deps.okhttp3
+    implementation deps.retrofit
+    //For binding and injection
+//    implementation deps.dagger2
+//    implementation deps.dagger2android
+//    implementation (deps.dagger2support)  {
+//        exclude group: 'com.android.support'
+//    }
+    kapt deps.dagger2compiler
+    kapt deps.dagger2processor
+    implementation deps.butterknife
+    kapt deps.butterknifeCompiler
+    implementation deps.timber
+    implementation deps.play_service_location
+    implementation deps.play_service_map
+    implementation deps.easy_permissions
+}
+
+apply from: "$project.rootDir/tools/detekt/detekt.gradle"
+apply from: "$project.rootDir/tools/checkstyle/checkstyle.gradle"
+apply from: "$project.rootDir/tools/pmd/pmd.gradle"
+apply from: "$project.rootDir/tools/findbugs/findbugs.gradle"
+
+apply plugin: 'com.google.gms.google-services'

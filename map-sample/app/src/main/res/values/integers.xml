@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="edt_home_number_line_max">1</integer>
+</resources>

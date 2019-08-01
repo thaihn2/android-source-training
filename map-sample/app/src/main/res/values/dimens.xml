@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dimen_48">48dp</dimen>
+    <dimen name="image_icon_size">24dp</dimen>
+    <dimen name="default_margin">8dp</dimen>
+
+    <dimen name="default_min_button_height">30dp</dimen>
+    <dimen name="dimen_22">22dp</dimen>
+    <dimen name="status_bar_height">24dp</dimen>
+    <dimen name="navigator_bar_height">58dp</dimen>
+    <dimen name="login_margin_16">16dp</dimen>
+
+    <!--Home screen-->
+    <dimen name="text_size_home">12sp</dimen>
+
+    <!--Login Screen-->
+    <dimen name="margin_login_top">60dp</dimen>
+    <dimen name="text_size_login">16sp</dimen>
+
+    <dimen name="default_padding_screen">12dp</dimen>
+    <dimen name="toolbar_height_size">96dp</dimen>
+    <dimen name="dimen_60">60dp</dimen>
+</resources>
+

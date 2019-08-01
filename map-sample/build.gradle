@@ -1,0 +1,113 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.3.41'
+    ext.butterknifeLatestReleaseVersion = '9.0.0'
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "io.realm:realm-gradle-plugin:5.12.0"
+        classpath "com.jakewharton:butterknife-gradle-plugin:$butterknifeLatestReleaseVersion"
+        classpath 'com.google.gms:google-services:4.3.0'
+        classpath 'io.fabric.tools:gradle:1.30.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-3"
+}
+
+allprojects {
+    repositories {
+//        flatDir {
+//            dirs 'libs'
+//        }
+        mavenCentral()
+        google()
+        jcenter()
+        maven {
+            url 'https://maven.google.com/'
+        }
+        maven {
+            url 'https://jitpack.io'
+        }
+    }
+
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    appVersionCode = 1
+    appVersionName = '1.0.0'
+    supportLibraryVersion = '28.0.0'
+    daggerVersion = '2.11'
+    minSdkVersion = 21
+    targetSdkVersion = 28
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.3'
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_8
+    targetCompatibilityVersion = JavaVersion.VERSION_1_8
+}
+
+ext.deps = [
+        multidex                 : "com.android.support:multidex:1.0.3",
+        supportAppCompat         : "com.android.support:appcompat-v7:$supportLibraryVersion",
+        supportTransition        : "com.android.support:transition:$supportLibraryVersion",
+        supportDesignCompat      : "com.android.support:design:$supportLibraryVersion",
+        supportRecyclerviewCompat: "com.android.support:recyclerview-v7:$supportLibraryVersion",
+        constrainLayout          : "com.android.support.constraint:constraint-layout:1.1.3",
+        supportCardView          : "com.android.support:cardview-v7:${supportLibraryVersion}",
+        glide                    : "com.github.bumptech.glide:glide:4.9.0",
+        //For binding and injection
+        dagger2                  : "com.google.dagger:dagger:$daggerVersion",
+        dagger2android           : "com.google.dagger:dagger-android:$daggerVersion",
+        dagger2support           : "com.google.dagger:dagger-android-support:$daggerVersion",
+        dagger2compiler          : "com.google.dagger:dagger-compiler:$daggerVersion",
+        dagger2processor         : "com.google.dagger:dagger-android-processor:$daggerVersion",
+        butterknife              : "com.jakewharton:butterknife:$butterknifeLatestReleaseVersion",
+        butterknifeCompiler      : "com.jakewharton:butterknife-compiler:$butterknifeLatestReleaseVersion",
+        //logic and data
+        easypermissions          : "pub.devrel:easypermissions:0.4.3",
+        rxandroid                : "io.reactivex.rxjava2:rxandroid:2.0.1",
+        rxjava                   : "io.reactivex.rxjava2:rxjava:2.0.9",
+        rxRelay                  : "com.jakewharton.rxrelay2:rxrelay:2.0.0",
+        gson                     : "com.google.code.gson:gson:2.8.1",
+        retrofit                 : 'com.squareup.retrofit2:retrofit:2.6.0',
+        retrofitRxAdapter        : 'com.squareup.retrofit2:adapter-rxjava2:2.6.0',
+        retrofitGson             : "com.squareup.retrofit2:converter-gson:2.6.0",
+        okhttp3                  : "com.squareup.okhttp3:okhttp:4.0.1",
+        okhttp3loging            : "com.squareup.okhttp3:logging-interceptor:4.0.1",
+        okio                     : "com.squareup.okio:okio:1.14.0",
+        kotlinRealmExt           : "com.github.vicpinm:krealmextensions:2.1.1",
+        //runtime lib
+        kotlinStdlib             : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
+        kotlinReflect            : "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version",
+        //google
+        fcm                      : "com.google.firebase:firebase-messaging:18.0.0",
+        fcm_jobdispatcher        : "com.firebase:firebase-jobdispatcher:0.8.5",
+        firebase_core            : "com.google.firebase:firebase-core:16.0.9",
+        firebase_auth            : "com.google.firebase:firebase-auth:17.0.0",
+        firebase_database        : "com.google.firebase:firebase-database:17.0.0",
+        crashlytics              : "com.crashlytics.sdk.android:crashlytics:2.10.0",
+        play_service_map         : 'com.google.android.gms:play-services-maps:16.0.0',
+        play_service_location    : 'com.google.android.gms:play-services-location:16.0.0',
+        easy_permissions         : 'pub.devrel:easypermissions:2.0.1',
+        //loging
+        timber                   : 'com.jakewharton.timber:timber:4.7.1'
+]

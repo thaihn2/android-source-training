@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Car Booking</string>
+    <string name="all_general_error">There\'s error</string>
+    <string name="item_movie_poster_image">Poster</string>
+    <!--Google map api key-->
+    <string name="google_map_api_key">AIzaSyBp5TZlXZ1EN_TSwn_OSiMOZmbepbHk84I</string>
+    <!--Home screen-->
+    <string name="home_current_location_invalid">Current location invalid</string>
+    <!--Login and Register screen-->
+    <string name="title_login_screen">Login</string>
+    <string name="title_register_screen">Register Account</string>
+    <string name="msg_login_success">Login success</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_text_submit">LOGIN</string>
+    <string name="login_text_create_account">No account yet? Create one</string>
+    <string name="register_text_submit">CREATE ACCOUNT</string>
+    <string name="register_text_login">Already a member? Login</string>
+    <string name="register_password_hint">Password</string>
+    <string name="register_email_hint">Email</string>
+    <string name="register_name_hint">Name</string>
+    <string name="title_login_success">Login success</string>
+    <string name="error_login_invalid_email_or_password">Invalid email or password</string>
+    <string name="error_register_email_already_exit">Email already exits</string>
+    <string name="error_register_password_not_strong">Password not strong</string>
+    <string name="error_register_name_invalid">Name invalid</string>
+    <string name="home_title_booking">booking</string>
+    <string name="home_rationale_location">This app needs access to your location so you can see your current location</string>
+    <string name="home_no_result">List location is empty</string>
+    <string name="error_home_can_not_get_direction">Can\'t get direction</string>
+</resources>

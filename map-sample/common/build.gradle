@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':core')
+    //UI
+    implementation deps.supportAppCompat
+    implementation deps.supportRecyclerviewCompat
+    //DI
+    implementation deps.dagger2
+    implementation deps.dagger2support
+    kapt deps.dagger2compiler
+    implementation deps.rxandroid
+    implementation deps.rxjava
+    implementation deps.retrofitGson
+    implementation deps.okhttp3
+    implementation deps.retrofit
+    //Kotlin
+    implementation deps.kotlinStdlib
+    implementation deps.kotlinReflect
+}
