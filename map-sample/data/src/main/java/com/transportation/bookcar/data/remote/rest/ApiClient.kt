@@ -40,6 +40,29 @@ interface ApiClient {
     fun getDirection(
             @Query("origin") origin: String,
             @Query("destination") destination: String,
-            @Query("key") key: String
+            @Query("key") key: String,
+            // Mode: driving(default), read more: https://developers.google.com/maps/documentation/directions/intro#TravelModes
+            @Query("mode") mode: String?,
+            // WayPoints: choose lat/lng or read more https://developers.google.com/maps/documentation/directions/intro#Waypoints
+            @Query("waypoints") waypoints: String?,
+            // Return more route but need more time
+            @Query("alternatives") alternatives: Boolean?,
+            // read more: https://developers.google.com/maps/faq#languagesupport
+            @Query("language") language: String?
     ): Single<PageListDTO<RouteDTO>>
+
+    @GET("/maps/api/directions/json")
+    fun getDirectionBetweenPlace(
+            @Query("origin") origin: String,
+            @Query("destination") destination: String,
+            @Query("key") key: String,
+            // Mode: driving(default), read more: https://developers.google.com/maps/documentation/directions/intro#TravelModes
+            @Query("mode") mode: String?,
+            // WayPoints: choose lat/lng or read more https://developers.google.com/maps/documentation/directions/intro#Waypoints
+            @Query("waypoints") waypoints: String?,
+            // Return more route but need more time
+            @Query("alternatives") alternatives: Boolean?,
+            // read more: https://developers.google.com/maps/faq#languagesupport
+            @Query("language") language: String?
+    ): Single<DirectionDTO<RouteDTO>>
 }

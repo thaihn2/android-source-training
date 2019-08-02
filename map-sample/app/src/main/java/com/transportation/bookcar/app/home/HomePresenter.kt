@@ -145,12 +145,28 @@ class HomePresenter @Inject constructor(private val mContext: Context, view: Hom
             view.getDirectionFail()
             return
         } else {
-            val origin = "${originLocation?.latitude},${originLocation?.longitude}"
-            val target = "${destination?.latitude},${destination?.longitude}"
-            mapInteractor.getDirection(origin, target, BuildConfig.SERVER_API_KEY).dispatchAndSubscribe {
+            val origin = "${originLocation.latitude},${originLocation.longitude}"
+            val target = "${destination.latitude},${destination.longitude}"
+//            mapInteractor.getDirection(origin, target, BuildConfig.SERVER_API_KEY).dispatchAndSubscribe {
+//                doOnSuccess {
+//                    Log.d(TAG, "Page list Route: $it")
+//                    view.getDirectionSuccess(getPathOnMap(it.results))
+//                }
+//
+//                doOnError {
+//                    view.hideLoading()
+//                    it.message?.let { it1 -> view.showError(it1) }
+//                }
+//
+//                doHideLoading {
+//                    view.hideLoading()
+//                }
+//            }
+
+            mapInteractor.getDirectionBetweenPlace(origin, target, BuildConfig.SERVER_API_KEY).dispatchAndSubscribe {
                 doOnSuccess {
                     Log.d(TAG, "Page list Route: $it")
-                    view.getDirectionSuccess(getPathOnMap(it.results))
+                    view.getDirectionSuccess(getPathOnMap(it.routes))
                 }
 
                 doOnError {
@@ -173,10 +189,10 @@ class HomePresenter @Inject constructor(private val mContext: Context, view: Hom
                 route.legs.forEach { leg ->
                     if (leg.steps.isNotEmpty()) {
                         leg.steps.forEach { step ->
-                            points.add(LatLng(step.start_location.lat, step.start_location.lng))
+                            points.add(LatLng(step.startLocation.lat, step.startLocation.lng))
                             val list = decodePoly(step.polyline.points)
                             points.addAll(list)
-                            points.add(LatLng(step.end_location.lat, step.end_location.lng))
+                            points.add(LatLng(step.endLocation.lat, step.endLocation.lng))
                         }
                     }
                 }

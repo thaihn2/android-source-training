@@ -3,25 +3,43 @@ package com.transportation.bookcar.domain.pojo
 data class Route(
         val legs: List<Leg>,
 
-        val overview_polyline: OverviewPolyline
+        val overviewPolyline: OverviewPolyline,
+
+        val summary: String
 )
 
 data class Leg(
-        val steps: List<Step>,
+        val distance: Distance,
 
-        val end_address: String,
+        val duration: Duration,
 
-        val start_address: String
+        val endAddress: String,
+
+        val endLocation: LatLng,
+
+        val startAddress: String,
+
+        val startLocation: LatLng,
+
+        val steps: List<Step>
 )
 
 data class Step(
-        val start_location: LatLng,
+        val distance: Distance,
 
-        val end_location: LatLng,
+        val duration: Duration,
 
-        val html_instructions: String,
+        val startLocation: LatLng,
 
-        val polyline: OverviewPolyline
+        val endLocation: LatLng,
+
+        val htmlInstructions: String,
+
+        val polyline: OverviewPolyline,
+
+        val travelMode: String,
+
+        val maneuver: String?
 )
 
 data class LatLng(
@@ -32,4 +50,16 @@ data class LatLng(
 
 data class OverviewPolyline(
         val points: String
+)
+
+data class Distance(
+        val text: String,
+
+        val value: Int
+)
+
+data class Duration(
+        val text: String,
+
+        val value: Int
 )

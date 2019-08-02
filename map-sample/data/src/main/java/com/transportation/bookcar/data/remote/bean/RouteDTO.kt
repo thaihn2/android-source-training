@@ -5,25 +5,43 @@ import com.google.gson.annotations.SerializedName
 data class RouteDTO(
         @SerializedName("legs") val legs: List<LegDTO>,
 
-        @SerializedName("overview_polyline") val overview_polyline: OverviewPolylineDTO
+        @SerializedName("overview_polyline") val overviewPolyline: OverviewPolylineDTO,
+
+        @SerializedName("summary") val summary: String
 )
 
 data class LegDTO(
-        @SerializedName("steps") val steps: List<StepDTO>,
+        @SerializedName("distance") val distance: DistanceDTO,
 
-        @SerializedName("end_address") val end_address: String,
+        @SerializedName("duration") val duration: DurationDTO,
 
-        @SerializedName("start_address") val start_address: String
+        @SerializedName("end_address") val endAddress: String,
+
+        @SerializedName("end_location") val enLocation: LatLngDTO,
+
+        @SerializedName("start_address") val startAddress: String,
+
+        @SerializedName("start_location") val startLocation: LatLngDTO,
+
+        @SerializedName("steps") val steps: List<StepDTO>
 )
 
 data class StepDTO(
-        @SerializedName("start_location") val start_location: LatLngDTO,
+        @SerializedName("distance") val distance: DistanceDTO,
 
-        @SerializedName("end_location") val end_location: LatLngDTO,
+        @SerializedName("duration") val duration: DurationDTO,
 
-        @SerializedName("html_instructions") val html_instructions: String,
+        @SerializedName("start_location") val startLocation: LatLngDTO,
 
-        @SerializedName("polyline") val polyline: OverviewPolylineDTO
+        @SerializedName("end_location") val endLocation: LatLngDTO,
+
+        @SerializedName("html_instructions") val htmlInstructions: String,
+
+        @SerializedName("polyline") val polyline: OverviewPolylineDTO,
+
+        @SerializedName("travel_mode") val travelMode: String,
+
+        @SerializedName("maneuver") val maneuver: String? // turn-left
 )
 
 data class LatLngDTO(
@@ -35,3 +53,14 @@ data class LatLngDTO(
 data class OverviewPolylineDTO(
         @SerializedName("points") val points: String
 )
+
+data class DistanceDTO(
+        @SerializedName("text") val text: String,
+        @SerializedName("value") val value: Int
+)
+
+data class DurationDTO(
+        @SerializedName("text") val text: String,
+        @SerializedName("value") val value: Int
+)
+

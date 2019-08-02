@@ -8,8 +8,10 @@ import com.transportation.bookcar.data.remote.rest.ApiClient
 import com.transportation.bookcar.data.repo.LocalRepo
 import com.transportation.bookcar.domain.R
 import com.transportation.bookcar.domain.interactor.MapInteractor
+import com.transportation.bookcar.domain.pojo.Direction
 import com.transportation.bookcar.domain.pojo.PageList
 import com.transportation.bookcar.domain.pojo.Route
+import com.transportation.bookcar.domain.transform.toDirection
 import com.transportation.bookcar.domain.transform.toPageList
 import com.transportation.bookcar.domain.transform.toRoute
 import io.reactivex.Single
@@ -24,10 +26,24 @@ internal class MapInteractorImpl @Inject constructor(
     override fun getDirection(origin: String, destination: String, key: String): Single<PageList<Route>> {
         return if (networkUtil.isConnected()) {
             localRepo.loadUserInfo().flatMap {
-                apiRepo.getDirection(origin, destination, key)
+                apiRepo.getDirection(origin, destination, key, null, null, null, null)
             }.map {
                 it.toPageList { routeDto ->
                     routeDto.toRoute()
+                }
+            }
+        } else {
+            Single.fromCallable { throw ApiException(resourceUtil.getStringResource(R.string.network_error), ERROR_CODE_NETWORK) }
+        }
+    }
+
+    override fun getDirectionBetweenPlace(origin: String, destination: String, key: String): Single<Direction<Route>> {
+        return if (networkUtil.isConnected()) {
+            localRepo.loadUserInfo().flatMap {
+                apiRepo.getDirectionBetweenPlace(origin, destination, key, null, null, null, null)
+            }.map {
+                it.toDirection { routes ->
+                    routes.toRoute()
                 }
             }
         } else {
