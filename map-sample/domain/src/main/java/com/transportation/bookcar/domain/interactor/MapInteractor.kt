@@ -8,5 +8,6 @@ import io.reactivex.Single
 interface MapInteractor {
     fun getDirection(origin: String, destination: String, key: String): Single<PageList<Route>>
 
-    fun getDirectionBetweenPlace(origin: String, destination: String, key: String): Single<Direction<Route>>
+    fun getDirectionBetweenPlace(origin: String, destination: String, key: String, alternatives: Boolean)
+            : Single<Direction<Route>>
 }

@@ -46,7 +46,7 @@ interface ApiClient {
             // WayPoints: choose lat/lng or read more https://developers.google.com/maps/documentation/directions/intro#Waypoints
             @Query("waypoints") waypoints: String?,
             // Return more route but need more time
-            @Query("alternatives") alternatives: Boolean?,
+            @Query("alternatives") alternatives: Boolean,
             // read more: https://developers.google.com/maps/faq#languagesupport
             @Query("language") language: String?
     ): Single<PageListDTO<RouteDTO>>
@@ -61,7 +61,7 @@ interface ApiClient {
             // WayPoints: choose lat/lng or read more https://developers.google.com/maps/documentation/directions/intro#Waypoints
             @Query("waypoints") waypoints: String?,
             // Return more route but need more time
-            @Query("alternatives") alternatives: Boolean?,
+            @Query("alternatives") alternatives: Boolean,
             // read more: https://developers.google.com/maps/faq#languagesupport
             @Query("language") language: String?
     ): Single<DirectionDTO<RouteDTO>>

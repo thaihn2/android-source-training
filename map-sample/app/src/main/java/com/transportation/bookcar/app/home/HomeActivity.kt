@@ -1,6 +1,7 @@
 package com.transportation.bookcar.app.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.transportation.bookcar.app.R
 import com.transportation.bookcar.core.view.CoreActivity
 import com.transportation.bookcar.domain.pojo.Candidate
 import com.transportation.bookcar.domain.pojo.Place
+import com.transportation.bookcar.domain.pojo.Route
 import kotlinx.android.synthetic.main.layout_loading.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -42,7 +44,6 @@ class HomeActivity : CoreActivity<HomePresenterContract>(),
 
     private var mCurrentLatLng: LatLng? = null
     private var mDestinationLatLng: LatLng? = null
-    private var mCurrentMarker: Marker? = null
     private var mDestinationMarker: Marker? = null
     private var mPolyline: Polyline? = null
 
@@ -73,6 +74,8 @@ class HomeActivity : CoreActivity<HomePresenterContract>(),
 
     override fun onMapReady(map: GoogleMap?) {
         this.mMap = map
+
+        mapSetting()
         mMap?.setOnMapClickListener { latLng ->
             presenter.showSearchResult(false)
             mDestinationMarker?.remove()
@@ -84,6 +87,14 @@ class HomeActivity : CoreActivity<HomePresenterContract>(),
 
             mPolyline?.remove()
             presenter.getDirection(mCurrentLatLng, mDestinationLatLng)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun mapSetting() {
+        mMap?.apply {
+            isMyLocationEnabled = true
+            uiSettings.isMyLocationButtonEnabled = true
         }
     }
 
@@ -142,10 +153,6 @@ class HomeActivity : CoreActivity<HomePresenterContract>(),
         when (latLng) {
             mCurrentLatLng -> {
                 edHomeCurrentLocation.setText(address)
-                mCurrentMarker?.apply {
-                    title = address
-                    showInfoWindow()
-                }
             }
             mDestinationLatLng -> {
                 edHomePlace.setText(address)
@@ -157,7 +164,18 @@ class HomeActivity : CoreActivity<HomePresenterContract>(),
         }
     }
 
-    override fun getDirectionSuccess(points: List<LatLng>) {
+    override fun getDirectionRoutes(routes: List<Route>) {
+        // Show distance or duration
+        val result = StringBuilder()
+        routes.forEachIndexed { index, route ->
+            result.append("Route ${index + 1}: Distance:${route.legs[0].distance.text} -- Duration:${route.legs[0].duration.text}")
+                    .append(System.getProperty("line.separator"))
+        }
+
+        Toast.makeText(this, result, Toast.LENGTH_LONG).show()
+    }
+
+    override fun getDirectionPoints(points: List<LatLng>) {
         Log.d(TAG, "getDirectionSuccess(): points:$points")
         if (points.isNotEmpty()) {
             val routes = arrayListOf<LatLng>()
@@ -253,7 +271,6 @@ class HomeActivity : CoreActivity<HomePresenterContract>(),
         Log.d(TAG, "getCurrentLocationSuccess(): $location")
         mCurrentLatLng = if (location == null) null else LatLng(location.latitude, location.longitude)
         mCurrentLatLng?.let {
-            mCurrentMarker = addMarker(it)
             presenter.getAddressFromLatLng(it)
             mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(it, ZOOM_DEFAULT))
         }

@@ -18,11 +18,11 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.transportation.bookcar.app.BuildConfig
 import com.transportation.bookcar.app.R
+import com.transportation.bookcar.app.util.MapUtil
 import com.transportation.bookcar.common.extension.dispatchAndSubscribe
 import com.transportation.bookcar.core.presenter.CorePresenter
 import com.transportation.bookcar.domain.interactor.MapInteractor
 import com.transportation.bookcar.domain.interactor.SearchLocationInteractor
-import com.transportation.bookcar.domain.pojo.Route
 import pub.devrel.easypermissions.EasyPermissions
 import java.util.*
 import javax.inject.Inject
@@ -163,10 +163,11 @@ class HomePresenter @Inject constructor(private val mContext: Context, view: Hom
 //                }
 //            }
 
-            mapInteractor.getDirectionBetweenPlace(origin, target, BuildConfig.SERVER_API_KEY).dispatchAndSubscribe {
+            mapInteractor.getDirectionBetweenPlace(origin, target, BuildConfig.SERVER_API_KEY, true).dispatchAndSubscribe {
                 doOnSuccess {
                     Log.d(TAG, "Page list Route: $it")
-                    view.getDirectionSuccess(getPathOnMap(it.routes))
+                    view.getDirectionPoints(MapUtil.parserDirectionRoutes(it.routes))
+                    view.getDirectionRoutes(it.routes)
                 }
 
                 doOnError {
@@ -179,63 +180,6 @@ class HomePresenter @Inject constructor(private val mContext: Context, view: Hom
                 }
             }
         }
-    }
-
-    private fun getPathOnMap(routes: List<Route>): List<LatLng> {
-        val points = arrayListOf<LatLng>()
-        if (routes.isNotEmpty()) {
-            val route = routes[0]
-            if (route.legs.isNotEmpty()) {
-                route.legs.forEach { leg ->
-                    if (leg.steps.isNotEmpty()) {
-                        leg.steps.forEach { step ->
-                            points.add(LatLng(step.startLocation.lat, step.startLocation.lng))
-                            val list = decodePoly(step.polyline.points)
-                            points.addAll(list)
-                            points.add(LatLng(step.endLocation.lat, step.endLocation.lng))
-                        }
-                    }
-                }
-            }
-        }
-        return points
-    }
-
-    private fun decodePoly(encoded: String): List<LatLng> {
-        val poly = ArrayList<LatLng>()
-        var index = 0
-        val len = encoded.length
-        var lat = 0
-        var lng = 0
-
-        while (index < len) {
-            var b: Int
-            var shift = 0
-            var result = 0
-            do {
-                b = encoded[index++].toInt() - 63
-                result = result or (b and 0x1f shl shift)
-                shift += 5
-            } while (b >= 0x20)
-            val dlat = if (result and 1 != 0) (result shr 1).inv() else result shr 1
-            lat += dlat
-
-            shift = 0
-            result = 0
-            do {
-                b = encoded[index++].toInt() - 63
-                result = result or (b and 0x1f shl shift)
-                shift += 5
-            } while (b >= 0x20)
-            val dlng = if (result and 1 != 0) (result shr 1).inv() else result shr 1
-            lng += dlng
-
-            val p = LatLng(lat.toDouble() / 1E5,
-                    lng.toDouble() / 1E5)
-            poly.add(p)
-        }
-
-        return poly
     }
 
     private fun checkPermissionLocation() {

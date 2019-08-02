@@ -26,7 +26,7 @@ internal class MapInteractorImpl @Inject constructor(
     override fun getDirection(origin: String, destination: String, key: String): Single<PageList<Route>> {
         return if (networkUtil.isConnected()) {
             localRepo.loadUserInfo().flatMap {
-                apiRepo.getDirection(origin, destination, key, null, null, null, null)
+                apiRepo.getDirection(origin, destination, key, null, null, false, null)
             }.map {
                 it.toPageList { routeDto ->
                     routeDto.toRoute()
@@ -37,10 +37,10 @@ internal class MapInteractorImpl @Inject constructor(
         }
     }
 
-    override fun getDirectionBetweenPlace(origin: String, destination: String, key: String): Single<Direction<Route>> {
+    override fun getDirectionBetweenPlace(origin: String, destination: String, key: String, alternatives: Boolean): Single<Direction<Route>> {
         return if (networkUtil.isConnected()) {
             localRepo.loadUserInfo().flatMap {
-                apiRepo.getDirectionBetweenPlace(origin, destination, key, null, null, null, null)
+                apiRepo.getDirectionBetweenPlace(origin, destination, key, null, null, alternatives, null)
             }.map {
                 it.toDirection { routes ->
                     routes.toRoute()
