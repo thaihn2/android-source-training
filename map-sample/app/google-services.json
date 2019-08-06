@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "809262311126",
+    "firebase_url": "https://carbooking-247801.firebaseio.com",
+    "project_id": "carbooking-247801",
+    "storage_bucket": "carbooking-247801.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809262311126:android:9330bd7c48e751a9",
+        "android_client_info": {
+          "package_name": "com.transportation.bookcar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809262311126-4c8uk30c53l3379o3o9ga5677pl0qlo2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.transportation.bookcar",
+            "certificate_hash": "01b9b27731427519176610155e843d2d2eb24b95"
+          }
+        },
+        {
+          "client_id": "809262311126-o9fjvq2a7c8ut9ds4qotb8frqildf9c1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-Yvu5cNkcpxO92TmrvycBWbaRQ7-UVR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809262311126-o9fjvq2a7c8ut9ds4qotb8frqildf9c1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

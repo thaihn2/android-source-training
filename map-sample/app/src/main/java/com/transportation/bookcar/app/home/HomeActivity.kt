@@ -75,7 +75,6 @@ class HomeActivity : CoreActivity<HomePresenterContract>(),
     override fun onMapReady(map: GoogleMap?) {
         this.mMap = map
 
-        mapSetting()
         mMap?.setOnMapClickListener { latLng ->
             presenter.showSearchResult(false)
             mDestinationMarker?.remove()
@@ -264,6 +263,7 @@ class HomeActivity : CoreActivity<HomePresenterContract>(),
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        mapSetting()
         presenter.onPermissionGrand()
     }
 
